@@ -85,7 +85,24 @@
             'en el reflejo de', 'en el viento de', 'en el horizonte de', 'al alba de',
             'en el crepúsculo de', 'en la quietud de', 'bajo la lluvia de', 'en la neblina de',
             'cuando no menos', 'sin dudarlo', 'sin dudas', 'como si fuera', 'como si se tratara de',
-            'despotricando contra', 'incluyendo', 'respirando', 'de la mano de'
+            'despotricando contra', 'incluyendo', 'respirando', 'de la mano de', 
+            'bajo la dictadura de','en nombre de la revolución de','con el consenso de',
+            'a merced del algoritmo de','al margen del discurso hegemónico','por el mandato de la otredad',
+            'con la retórica del capital','en el fetiche de','a través del panóptico de',
+            'bajo la estructura del poder de','con la insurrección de','en el marco del pacto social de',
+            'tras el fracaso de la utopía de','por la plusvalía de','como síntoma del neoliberalismo de',
+            'en conflicto con la hegemonía de','en la performatividad de','con el contrato simbólico de',
+            'en oposición al aparato ideológico de','desde la angustia de','con la fenomenología de',
+            'en el pliegue de','a la deriva de','por el sinsentido de','con la hiperrealidad de',
+            'a la luz de la náusea de','en la clausura de','por el simulacro de','como antítesis de',
+            'bajo el espectro de lo real','tras la deconstrucción de','en el exilio de la verdad',
+            'a través del concepto de','al margen de la metafísica','con el vacío de ser',
+            'por la tautología de','en la ruptura del sujeto','en la fuga del tiempo','con la ansiedad de lo inasible',
+            'al conjuro de','bajo el sello de','con la profecía de','al dictado del oráculo de','en la invocación de',
+            'tras el velo de Isis','según los designios de','por la sangre del ritual de','a la sombra del zodíaco','con el signo de',
+            'al compás de las constelaciones','desde el abismo de Lilith','en el canto de las esferas','con la alquimia de',
+            'bajo el influjo lunar de','en la transmigración de','como símbolo hermético de','al reflejo de Mercurio retrógrado',
+            'en el descenso de Inanna','por el sortilegio de'
         ];
 
         function getRandomElement(arr) {
@@ -112,21 +129,52 @@
             }
         }
 
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function capitalizeFirstLetter(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function maybe(probability) {
+            return Math.random() < probability;
+        }
+
         function generatePoem(numberOfLines, words) {
             const poemLines = [];
 
             for (let i = 0; i < numberOfLines; i++) {
-                const word1 = getRandomElement(words);
-                const word2 = getRandomElement(words);
-                const connector = getRandomElement(connectors);
+                const structureType = Math.floor(Math.random() * 4);
+                let line = '';
 
-                let line = capitalizeFirstLetter(`${word1} ${connector} ${word2}`);
-                line = i == 0 || i % 4 ? line : '<br>' + line;
-                poemLines.push(line);
+                switch (structureType) {
+                    case 0: // Concept + connector + concept
+                        line = `${getRandomElement(words)} ${getRandomElement(connectors)} ${getRandomElement(words)}`;
+                        break;
+                    case 1: // Connector + concept
+                        line = `${getRandomElement(connectors)} ${getRandomElement(words)}`;
+                        break;
+                    case 2: // Concept + concept
+                        line = `${getRandomElement(words)} ${getRandomElement(words)}`;
+                        break;
+                    case 3: // Concept + connector + concept + connector + concept
+                        line = `${getRandomElement(words)} ${getRandomElement(connectors)} ${getRandomElement(words)} ${getRandomElement(connectors)} ${getRandomElement(words)}`;
+                        break;
+                }
 
+                // Random punctuation
+                if (maybe(0.3)) line += maybe(0.5) ? '.' : '...';
+                if (maybe(0.1)) line = '¡' + capitalizeFirstLetter(line) + '!';
+                else line = capitalizeFirstLetter(line);
+
+                // Line break logic
+                poemLines.push(i % 4 === 0 && i !== 0 ? '<br>' + line : line);
             }
+
             return poemLines;
         }
+
         load();
     </script>
 </body>
